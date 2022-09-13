@@ -1,22 +1,23 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import useAuth from '../hooks/useAuth';
-import Logo from '../components/Logo';
-
-// import useAuth  from '../hooks/useAuth';
-import {Avatar, Divider} from '@mui/material';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import Logo from "../components/Logo";
+import { Avatar, Divider } from "@mui/material";
+import useAuth from "../hooks/useAuth";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 function MainHeader() {
   const { user, logout } = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,68 +27,71 @@ function MainHeader() {
     setAnchorEl(null);
   };
 
-  const handleLogout = async() => { 
+  const handleLogout = async () => {
     try {
-        handleMenuClose();
-        await logout(() => {
-            navigate("/login");
-        });
+      handleMenuClose();
+      await logout(() => {
+        navigate("/login");
+      });
     } catch (error) {
-        console.log(error);
+      console.error(error);
     }
   };
 
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
-        id="menu-appbar"
-        anchorEl={anchorEl}
-        anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-            }}
-        keepMounted
-        transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-            }}
-
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
     >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Box sx={{ my: 1.5, px: 2.5 }}>
+        <Typography variant="subtitle2" noWrap>
+          {user?.name}
+        </Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
+          {user?.email}
+        </Typography>
+      </Box>
 
-        <Box sx={{ my: 1.5, px: 2.5 }}> 
-            <Typography variant='subtitle2' noWrap>{user?.name}</Typography>
-            <Typography variant='body2' sx={{color:"text.secondary"}} noWrap>{user?.email}</Typography>
+      <Divider sx={{ borderStyle: "dashed" }} />
 
-            <Divider sx={{ borderStyle: "dashed" }}></Divider>
+      <MenuItem
+        onClick={handleMenuClose}
+        to="/"
+        component={RouterLink}
+        sx={{ mx: 1 }}
+      >
+        My Profile
+      </MenuItem>
 
-            <MenuItem
-                onClick={handleMenuClose}
-                to="/"
-                component={RouterLink}
-                sx={{ mx: 1 }}>
-                    My Profile
-            </MenuItem>
+      <MenuItem
+        onClick={handleMenuClose}
+        to="/account"
+        component={RouterLink}
+        sx={{ mx: 1 }}
+      >
+        Account Settings
+      </MenuItem>
 
-            <MenuItem
-                onClick={handleMenuClose}
-                to="/account"
-                component={RouterLink}
-                sx={{ mx: 1 }}>
-                    Account Setting
-            </MenuItem>
+      <Divider sx={{ borderStyle: "dashed" }} />
 
-            <Divider sx={{ borderStyle: "dashed" }}></Divider>
-
-            <MenuItem></MenuItem>
-
-        </Box>
-
+      <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
+        Logout
+      </MenuItem>
     </Menu>
-    
   );
+  console.log("renderMenu-Header",renderMenu)
 
   return (
     <Box sx={{ mb: 3 }}>
@@ -97,21 +101,32 @@ function MainHeader() {
             size="large"
             edge="start"
             color="inherit"
-            aria-label="menu"
+            aria-label="open drawer"
             sx={{ mr: 2 }}
           >
             <Logo />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
             CoderComm
           </Typography>
+
           <Box sx={{ flexGrow: 1 }} />
           <Box>
-            <Avatar src={user.avatarUrl} alt={user.name} onClick={handleProfileMenuOpen} />
+            <Avatar
+              onClick={handleProfileMenuOpen}
+              src={user?.avatarUrl}
+              alt={user?.name}
+              sx={{ width: 32, height: 32 }}
+            />
           </Box>
-          {renderMenu}
         </Toolbar>
       </AppBar>
+      {renderMenu}
     </Box>
   );
 }

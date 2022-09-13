@@ -47,7 +47,7 @@ function ProfileCover({ profile }) {
 
   const handleError = (e) => {
     const imgIndex = Math.floor(Math.random() * 5) + 1;
-    e.target.src = `/covers/cover_${imgIndex}.jpeg`;
+    e.target.src = `/covers/cover_${imgIndex}.jpg`;
     e.target.onError = null;
   };
 

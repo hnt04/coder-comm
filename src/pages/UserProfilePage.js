@@ -15,6 +15,7 @@ function UserProfilePage() {
     (state) => state.user,
     shallowEqual
   );
+  console.log("selectedUser", selectedUser)
 
   useEffect(() => {
     if (userId) {

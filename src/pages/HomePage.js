@@ -4,7 +4,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-
+import RequestList from '../features/friend/RequestList';
 import Profile from '../features/user/Profile';
 import FriendList from "../features/friend/FriendList";
 import FriendRequests from '../features/friend/FriendRequests';
@@ -23,10 +23,10 @@ const TabsWrapperStyle = styled("div")(({ theme }) => ({
     display:"flex",
     position: "absolute",
     backgroundColor: "#fff",
-    [theme.breakpoint.up("sm")] : {
+    [theme.breakpoints.up("sm")] : {
         justifyContent:"center",
     },
-    [theme.breakpoint.up("md")] : {
+    [theme.breakpoints.up("md")] : {
         justifyContent:"flex-end",
         paddingRight: theme.spacing(3),
     },
@@ -60,6 +60,11 @@ function HomePage() {
             value: "add_friends",
             icon: <PersonAddIcon sx={{fontSize: 24 }} />,
             component: <AddFriend />,
+        },
+        {
+            value: "your_request",
+            icon: <PersonAddIcon sx={{fontSize: 24 }} />,
+            component: <RequestList />,
         }
     ]
 
@@ -72,7 +77,7 @@ function HomePage() {
                 position: "relative",
             }}>
 
-            <ProfileCover profile={user}/>
+            {user && <ProfileCover profile={user} />}
             
             <TabsWrapperStyle>
                 <Tabs
@@ -81,12 +86,13 @@ function HomePage() {
                     variant='scrollable'
                     allowScrollButtonsMobile
                     onChange={(e, value) => handleChangeTab(value)}>
-                {PROFILE_TABS.map((tab) => (<Tab 
+                {PROFILE_TABS.map((tab) => (
+                <Tab 
                     disableRipple
                     key={tab.value}
                     value={tab.value}
                     icon={tab.icon}
-                    label={capitalCase(tab.label)} />
+                    label={capitalCase(tab.value)} />
                     ))}
                 </Tabs>
             </TabsWrapperStyle>

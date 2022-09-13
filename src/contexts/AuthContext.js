@@ -42,7 +42,7 @@ const reducer = (state, action) => {
                 ...state,
                 isAuthenticated: false,
                 user: null,
-            }
+            };
         case UPDATE_PROFILE:
             const {
                 name,
@@ -79,8 +79,8 @@ const reducer = (state, action) => {
                 postCount,
                 },
             };
-            default:
-                return state;
+        default:
+            return state;
     } 
 }
 

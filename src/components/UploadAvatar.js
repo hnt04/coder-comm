@@ -98,11 +98,11 @@ function UploadAvatar({ error, file, helperText, sx, ...other }) {
               ...(file && {
                 opacity: 0,
                 color: "common.white",
-                bgcolor: "grey.900",
+                backgroundColor: "grey.900",
                 "&:hover": { opacity: 0.72 },
               }),
               ...((isDragReject || error) && {
-                bgcolor: "error.lighter",
+                backgroundColor: "error.lighter",
               }),
             }}
           >

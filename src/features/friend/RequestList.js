@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Stack, Typography, Card, Box, Pagination, Grid, Container } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getFriendRequests } from "./friendSlice";
+import { sendFriendRequestList } from "./friendSlice";
 import UserCard from "./UserCard";
 import SearchInput from "../../components/SearchInput";
 
-function FriendRequests() {
+function RequestList() {
   const [filterName, setFilterName] = useState("");
   const [page, setPage] = React.useState(1);
 
@@ -20,13 +20,13 @@ function FriendRequests() {
   };
 
   useEffect(() => {
-    dispatch(getFriendRequests({ filterName, page }));
+    dispatch(sendFriendRequestList({ filterName, page }));
   }, [filterName, page, dispatch]);
 
   return (
     <Container>
       <Typography variant="h4" sx={{ mb: 3 }}>
-        Friend Requests
+        Your Request
       </Typography>
       <Card sx={{ p: 3 }}>
         <Stack spacing={2}>
@@ -37,7 +37,7 @@ function FriendRequests() {
               variant="subtitle"
               sx={{ color: "text.secondary", ml: 1 }}
             >
-              {totalUsers > 1 ? `You sent ${totalUsers} requests` : totalUsers === 1 ? `You sent ${totalUsers} request` : "No request"}
+              {totalUsers > 1 ? `${totalUsers} requests found` : totalUsers === 1 ? `${totalUsers} request found` : "No request found"}
             </Typography>
 
             <Pagination
@@ -60,4 +60,4 @@ function FriendRequests() {
   );
 }
 
-export default FriendRequests;
+export default RequestList;

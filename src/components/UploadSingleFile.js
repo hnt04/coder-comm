@@ -39,7 +39,7 @@ function UploadSingleFile({ error = false, file, helperText, sx, ...other }) {
           ...((isDragReject || error) && {
             color: "error.main",
             borderColor: "error.light",
-            bgcolor: "error.lighter",
+            backgroundColor: "error.lighter",
           }),
           ...(file && {
             padding: "5% 0",
