@@ -6,7 +6,7 @@ import Logo from "../components/Logo";
 function BlankLayout() {
   return (
     <Stack minHeight="100vh" justifyContent="center" alignItem="center">
-        <Logo sx={{ width: 90, height: 90, mb: 5 }}/>
+        <Logo sx={{ marginLeft: "45%", width: 90, height: 90, mb: 5 }}/>
         <Outlet />
     </Stack>
   );

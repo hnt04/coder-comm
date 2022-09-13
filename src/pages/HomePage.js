@@ -15,6 +15,7 @@ import { capitalCase } from 'change-case';
 import { Card, Box } from '@mui/material';
 import ProfileCover from '../features/user/ProfileCover';
 import { styled } from "@mui/material/styles";
+import ScheduleSendOutlinedIcon from '@mui/icons-material/ScheduleSendOutlined';
 
 const TabsWrapperStyle = styled("div")(({ theme }) => ({
     zIndex: 9,
@@ -63,7 +64,7 @@ function HomePage() {
         },
         {
             value: "your_request",
-            icon: <PersonAddIcon sx={{fontSize: 24 }} />,
+            icon: <ScheduleSendOutlinedIcon sx={{fontSize: 24 }} />,
             component: <RequestList />,
         }
     ]
