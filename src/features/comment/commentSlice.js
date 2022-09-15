@@ -48,7 +48,21 @@ const slice = createSlice({
               const { commentId, reactions } = action.payload;
               state.commentsById[commentId].reactions = reactions;
             },
-          },
+
+            deleteCommentSuccess(state, action) {
+              state.isLoading = false;
+              state.error = null;
+              const { postId } = action.payload;
+              state.postsById[postId].deletes = null;
+            },
+        
+            updatedCommentSuccess(state, action) {
+              state.isLoading = false;
+              state.error = null;
+              const updatedPost = action.payload;
+              state.updatedPostInform = updatedPost;
+            },
+          }
         });
 
 export default slice.reducer;
@@ -108,6 +122,33 @@ export const sendCommentReaction =
           reactions: response.data,
         })
       );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+  export const deleteComment = ({ _id }) => async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(`/comments/${_id}`);
+      dispatch(slice.actions.deleteCommentSuccess(...response.data, _id));
+      toast.success("Delete successfully");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+  export const updatedCommentProfile = ({ content, _id }) => async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const data = {
+        content,
+      };
+      const response = await apiService.put(`/comments/:${_id}`, data);
+      dispatch(slice.actions.updatedCommentSuccess(response.data));
+      toast.success("Update Comment successfully");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

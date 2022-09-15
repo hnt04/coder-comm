@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Pagination, Stack, Typography } from "@mui/material";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,21 @@ import { getComments } from "./commentSlice";
 import CommentCard from "./CommentCard";
 import LoadingScreen from "../../components/LoadingScreen";
 import { COMMENTS_PER_POST } from "../../app/config";
+import { Button, Modal } from "@mui/material";
+import { Box } from "@mui/material";
+import { deleteComment } from "./commentSlice";
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 function CommentList({ postId }) {
   const { commentsByPost, commentsById, totalComments, isLoading, currentPage} = useSelector((state) => ({
@@ -38,6 +53,12 @@ function CommentList({ postId }) {
   } else if (isLoading) {
     renderComments = <LoadingScreen />;
   }
+
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
+  
+  const handleDelete = (id) => dispatch(deleteComment(id))
+  const [chosenId, setChosenId] = useState(null);
 
   return (
     <Stack spacing={1.5}>

@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Box, Stack, alpha } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { updatedPostProfile } from "./postSlice";
-import useAuth from "../../hooks/useAuth";
+// import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
@@ -10,23 +10,35 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, FTextField } from "../../components/form";
 import FUploadImage from "../../components/form/FUploadImage";
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 1000,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 const UpdateFormSchema = yup.object().shape({
   name: yup.string().required("Content is required"),
 });
 
 function PostFormUpdate({ post }) {
-  const { user } = useAuth();
   const isLoading = useSelector((state) => state.user.isLoading);
 
   const defaultValues = {
-    content: user?.content || "", 
-    image: user?.image || "",
+    content: post.content, 
+    image: post.url,
   };
 
   const methods = useForm({
     resolver: yupResolver(UpdateFormSchema),
     defaultValues,
   });
+
   const {
     setValue,
     handleSubmit,
@@ -55,8 +67,15 @@ function PostFormUpdate({ post }) {
     dispatch(updatedPostProfile({ postId: post._id, ...data }));
   };
 
+  const handleEdit = (post) => dispatch(updatedPostProfile(post))
+
+  const [openEdit, setOpenEdit] = React.useState(false);
+
+  // const handleClose = () => setOpen(false);
+
   return (  
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <Box sx={style}>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)} onClick={()=>handleEdit(post)}>
         <Stack spacing={2}>
           <FTextField
             name="content"
@@ -82,7 +101,7 @@ function PostFormUpdate({ post }) {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "flex-end",
+              justifyContent: "center",
             }}
           >
             <LoadingButton
@@ -96,6 +115,7 @@ function PostFormUpdate({ post }) {
           </Box>
         </Stack>
       </FormProvider>
+      </Box>
   );
 }
 

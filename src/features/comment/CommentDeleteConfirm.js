@@ -17,15 +17,15 @@ const style = {
   p: 4,
 };
 
-const PostDeleteConfirmation = ({ post }) => {
+const CommentDeleteConfirmation = ({ comment }) => {
     // const [open, setOpen] = React.useState(false);
     const dispatch = useDispatch();
 
     return(
       <Box sx={style}>
-        <Typography variant="h5" textAlign="center">Delete Post</Typography>
+        <Typography variant="h5" textAlign="center">Delete Comment</Typography>
             
-        <Typography textAlign="center" sx={{marginTop: "10px", marginBottom: "10px"}}>Do you want to <b>delete</b> this post?</Typography>
+        <Typography textAlign="center" sx={{marginTop: "10px", marginBottom: "10px"}}>Do you want to <b>delete</b> this comment?</Typography>
 
         <Box
           direction="row" spacing={2}
@@ -36,7 +36,7 @@ const PostDeleteConfirmation = ({ post }) => {
               marginTop:"15px",
             }}
           >
-          <Button variant="outlined" color="error" onClick={() => dispatch(deletePost(post._id))}>
+          <Button variant="outlined" color="error" onClick={() => dispatch(deletePost(comment._id))}>
                   Delete
           </Button>
         </Box>
@@ -44,4 +44,4 @@ const PostDeleteConfirmation = ({ post }) => {
     )
 }
 
-export default PostDeleteConfirmation;
+export default CommentDeleteConfirmation;

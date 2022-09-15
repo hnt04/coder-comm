@@ -9,6 +9,7 @@ const rootReducer = {
     friend: friendReducer,
     post: postReducer,
     user: userReducer,
+    // chosenId: chosenIdReducer,
 };
 
 const store = configureStore({
@@ -16,3 +17,4 @@ const store = configureStore({
 });
 
 export default store;
+

@@ -11,13 +11,19 @@ import MenuItem from "@mui/material/MenuItem";
 import PostDeleteConfirmation from './PostDeleteConfirm';
 import PostFormUpdate from './PostFormUpdate';
 import { Button, Modal } from "@mui/material";
+// import { updatedPostProfile } from "./postSlice";
 
-function PostCard({ post }) {
+function PostCard({ post, handleChoose, handleChooseEdit }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [show, setShow] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  // const [openEdit, setOpenEdit] = React.useState(false);
+  // const [chosenDelete, setChosenDelete] = useState(null)
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  // const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  // const handleOpenEdit = () => setOpenEdit(true);
+  // const handleCloseEdit = () => setOpenEdit(false);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -28,10 +34,6 @@ function PostCard({ post }) {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
-  // const onSubmit = async (data) => {
-  //   dispatchEvent(updateUserProfile({ postId: post._id, ...data}));
-  // }
 
   const menuId = "primary-option-menu";
   const renderMenu = (
@@ -51,19 +53,17 @@ function PostCard({ post }) {
       onClose={handleMenuClose}
     >
       <MenuItem>
-      <Button onClick={handleShow}>
-        <Modal show={show} onClose={handleClose}>
-        <PostDeleteConfirmation /></Modal>
-        Delete Post
-      </Button>
+      <Button onClick={()=> handleChoose(post._id)}>Delete Post</Button>
+        <Modal>
+          <PostDeleteConfirmation />
+        </Modal>
       </MenuItem>
 
       <MenuItem>
-      <Button onClick={handleShow}>
-      <Modal show={show} onClose={handleClose}>
-        <PostFormUpdate /></Modal>
-        Edit Post
-      </Button>
+      <Button onClose={handleClose} onClick={()=> handleChooseEdit(post)}>Edit Post</Button>
+      <Modal>
+        <PostFormUpdate />
+      </Modal>
       </MenuItem>
     </Menu>
   );

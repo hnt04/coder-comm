@@ -66,8 +66,8 @@ const slice = createSlice({
     deletePostSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { postId } = action.payload;
-      state.postsById[postId].deletes = null;
+      const { id } = action.payload;
+      state.postsById[id].deletes = null;
     },
 
     updatedPostSuccess(state, action) {
@@ -117,7 +117,7 @@ export const createPost = ({ content, image }) => async (dispatch) => {
   export const deletePost = ({ id }) => async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.delete(`/posts/:${id}`);
+      const response = await apiService.delete(`/posts/${id}`);
       dispatch(slice.actions.deletePostSuccess(...response.data, id));
       toast.success("Delete successfully");
     } catch (error) {
@@ -146,7 +146,7 @@ export const sendPostReaction = ({ postId, emoji }) => async (dispatch) => {
     }
   };
 
-  export const updatedPostProfile = ({ content, image, id }) => async (dispatch) => {
+  export const updatedPostProfile = ({ content, image, post }) => async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
       const data = {
@@ -157,7 +157,7 @@ export const sendPostReaction = ({ postId, emoji }) => async (dispatch) => {
         const imageUrl = await cloudinaryUpload(image);
         data.image = imageUrl;
       }
-      const response = await apiService.put(`/posts/:${id}`, data);
+      const response = await apiService.put(`/posts/${post._id}`, data);
       dispatch(slice.actions.updatedPostSuccess(response.data));
       toast.success("Update Post successfully");
     } catch (error) {
