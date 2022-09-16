@@ -5,6 +5,7 @@ import apiService from "../../app/apiService";
 import { POST_PER_PAGE } from "../../app/config";
 import { cloudinaryUpload } from "../../utils/cloudinary";
 import { getCurrentUserProfile } from "../user/userSlice";
+import PostDeleteConfirmation from "./PostDeleteConfirm";
 
 const initialState = {
   isLoading: false,
@@ -66,8 +67,8 @@ const slice = createSlice({
     deletePostSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { id } = action.payload;
-      state.postsById[id].deletes = null;
+      const id = action.payload;
+      state.postsById[id].delete = null;
     },
 
     updatedPostSuccess(state, action) {
@@ -90,7 +91,7 @@ export const getPosts = ({ userId, page = 1, limit = POST_PER_PAGE }) =>
         params,
       });
       if (page === 1) dispatch(slice.actions.resetPosts());
-      dispatch(slice.actions.getPostsSuccess(response.data));
+      dispatch(slice.actions. (response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
@@ -114,11 +115,11 @@ export const createPost = ({ content, image }) => async (dispatch) => {
     }
   };
 
-  export const deletePost = ({ id }) => async (dispatch) => {
+  export const deletePost = ({ post, id }) => async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
       const response = await apiService.delete(`/posts/${id}`);
-      dispatch(slice.actions.deletePostSuccess(...response.data, id));
+      dispatch(slice.actions.deletePostSuccess(...response.data, post));
       toast.success("Delete successfully");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));

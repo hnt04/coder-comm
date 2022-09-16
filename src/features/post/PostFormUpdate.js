@@ -67,7 +67,7 @@ function PostFormUpdate({ post }) {
     dispatch(updatedPostProfile({ postId: post._id, ...data }));
   };
 
-  const handleEdit = (post) => dispatch(updatedPostProfile(post))
+  const handleEdit = (post) => dispatch(updatedPostProfile({post}))
 
   const [openEdit, setOpenEdit] = React.useState(false);
 
@@ -75,7 +75,7 @@ function PostFormUpdate({ post }) {
 
   return (  
     <Box sx={style}>
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)} onClick={()=>handleEdit(post)}>
+    <FormProvider methods={methods}>
         <Stack spacing={2}>
           <FTextField
             name="content"
@@ -109,6 +109,7 @@ function PostFormUpdate({ post }) {
               variant="contained"
               size="small"
               loading={isSubmitting || isLoading}
+              onClick={()=>handleEdit(post)}
             >
               Save Post
             </LoadingButton>
