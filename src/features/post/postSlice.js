@@ -91,7 +91,7 @@ export const getPosts = ({ userId, page = 1, limit = POST_PER_PAGE }) =>
         params,
       });
       if (page === 1) dispatch(slice.actions.resetPosts());
-      dispatch(slice.actions. (response.data));
+      dispatch(slice.actions(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
