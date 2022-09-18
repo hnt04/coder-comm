@@ -5,6 +5,7 @@ import CommentReaction from "./CommentReaction";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteComment } from "./commentSlice";
 import { useDispatch } from "react-redux";
+import CommentDeleteConfirmation from "./CommentDeleteConfirm";
 
 const style = {
   position: 'absolute',
@@ -19,19 +20,19 @@ const style = {
 };
 
 function CommentCard({ comment }) {
-  const [open, setOpen] = React.useState(false);
-  const [chosenId, setChosenId] = useState(null);
+  const [openComment, setOpenComment] = React.useState(false);
+  const [chosenIdComment, setChosenIdComment] = useState(null);
 
   const dispatch = useDispatch();
 
-  const handleChoose = (id)=> {
-    setOpen(true)
-      setChosenId(id)
+  const handleChooseComment = (id)=> {
+    setOpenComment(true)
+      setChosenIdComment(id)
   }
 
-  const handleClose = () => setOpen(false);
+  const handleCloseComment = () => setOpenComment(false);
 
-  const handleDelete = (_id) => dispatch(deleteComment(comment._id))
+  const handleDeleteComment = (id) => dispatch(deleteComment(id))
 
   return (
     <Stack direction="row" spacing={2}>
@@ -46,11 +47,11 @@ function CommentCard({ comment }) {
           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
             {comment.author?.name}
           </Typography>
-          <Button onClick={()=> handleChoose(comment._id)}>
-            <DeleteIcon />
+          <Button onClick={()=> handleChooseComment(comment._id)}>
+            <DeleteIcon /></Button>
             <Modal
-              open={open}
-              onClose={handleClose}>
+              open={openComment}
+              onClose={handleCloseComment}>
             <Box sx={style}>
             <Typography variant="h5" textAlign="center">Delete Comment</Typography>
                 
@@ -65,13 +66,13 @@ function CommentCard({ comment }) {
                   marginTop:"15px",
                 }}
               >
-              <Button variant="outlined" color="error" onClick={()=>handleDelete(chosenId)}>
+              <Button variant="outlined" color="error" onClick={()=>handleDeleteComment(chosenIdComment)}>
                       Delete
               </Button>
             </Box>
-          </Box>
-          </Modal>
-          </Button>
+            </Box>
+            </Modal>
+            
         </Stack>
         <Typography variant="caption" sx={{ color: "text.disabled" }}>
             {fDate(comment.createdAt)}

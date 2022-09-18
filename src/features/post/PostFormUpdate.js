@@ -30,12 +30,12 @@ function PostFormUpdate({ post }) {
   const isLoading = useSelector((state) => state.user.isLoading);
 
   const defaultValues = {
-    content: post.content, 
-    image: post.url,
+    content: " ", 
+    image: " "
   };
 
   const methods = useForm({
-    resolver: yupResolver(UpdateFormSchema),
+    // resolver: yupResolver(UpdateFormSchema),
     defaultValues,
   });
 
@@ -64,7 +64,8 @@ function PostFormUpdate({ post }) {
   );
 
   const onSubmit = (data) => {
-    dispatch(updatedPostProfile({ postId: post._id, ...data }));
+    console.log("data", {postId: post._id, ...data})
+    dispatch(updatedPostProfile({ postId: post._id, content: data.content, image: post.image }));
   };
 
   const handleEdit = (post) => dispatch(updatedPostProfile({post}))
@@ -75,7 +76,7 @@ function PostFormUpdate({ post }) {
 
   return (  
     <Box sx={style}>
-    <FormProvider methods={methods}>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           <FTextField
             name="content"
@@ -109,7 +110,6 @@ function PostFormUpdate({ post }) {
               variant="contained"
               size="small"
               loading={isSubmitting || isLoading}
-              onClick={()=>handleEdit(post)}
             >
               Save Post
             </LoadingButton>

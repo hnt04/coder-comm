@@ -52,15 +52,10 @@ const slice = createSlice({
             deleteCommentSuccess(state, action) {
               state.isLoading = false;
               state.error = null;
-              const { postId } = action.payload;
-              state.postsById[postId].deletes = null;
-            },
-        
-            updatedCommentSuccess(state, action) {
-              state.isLoading = false;
-              state.error = null;
-              const updatedPost = action.payload;
-              state.updatedPostInform = updatedPost;
+              console.log("comment", action.payload.commentId)
+              const  postId = action.payload
+              delete state.commentsById[action.payload.commentId]
+              state.commentsByPost = state.commentsByPost[postId].filter((commentId) => commentId !== action.payload.commentId)
             },
           }
         });
@@ -128,27 +123,12 @@ export const sendCommentReaction =
     }
   };
 
-  export const deleteComment = ({ _id }) => async (dispatch) => {
+  export const deleteComment = ( commentId ) => async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.delete(`/comments/${_id}`);
-      dispatch(slice.actions.deleteCommentSuccess(...response.data, _id));
+      const response = await apiService.delete(`/comments/${commentId}`);
+      dispatch(slice.actions.deleteCommentSuccess({...response.data, commentId}));
       toast.success("Delete successfully");
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
-
-  export const updatedCommentProfile = ({ content, _id }) => async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const data = {
-        content,
-      };
-      const response = await apiService.put(`/comments/:${_id}`, data);
-      dispatch(slice.actions.updatedCommentSuccess(response.data));
-      toast.success("Update Comment successfully");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

@@ -6,9 +6,8 @@ import { getComments } from "./commentSlice";
 import CommentCard from "./CommentCard";
 import LoadingScreen from "../../components/LoadingScreen";
 import { COMMENTS_PER_POST } from "../../app/config";
-import { Button, Modal } from "@mui/material";
-import { Box } from "@mui/material";
-import { deleteComment } from "./commentSlice";
+// import { deleteComment } from './commentSlice';
+// import { Box, Modal, Button } from "@mui/material";
 
 const style = {
   position: 'absolute',
@@ -34,6 +33,16 @@ function CommentList({ postId }) {
   );
   const totalPages = Math.ceil(totalComments / COMMENTS_PER_POST);
   const dispatch = useDispatch();
+  const [openComment, setOpenComment] = React.useState(false);
+  const [chosenIdComment, setChosenIdComment] = useState(null);
+  const handleChooseComment = (id)=> {
+    setOpenComment(true)
+      setChosenIdComment(id)
+  }
+
+  // const handleCloseComment = () => setOpenComment(false);
+
+  // const handleDeleteComment = (id) => dispatch(deleteComment(id));
 
   useEffect(() => {
     if (postId) dispatch(getComments({ postId }));
@@ -46,7 +55,7 @@ function CommentList({ postId }) {
     renderComments = (
       <Stack spacing={1.5}>
         {comments.map((comment) => (
-          <CommentCard key={comment._id} comment={comment} />
+          <CommentCard key={comment._id} handleChooseComment={handleChooseComment} comment={comment} />
         ))}
       </Stack>
     );
@@ -54,11 +63,11 @@ function CommentList({ postId }) {
     renderComments = <LoadingScreen />;
   }
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
+  // const [open, setOpen] = React.useState(false);
+  // const handleClose = () => setOpen(false);
   
-  const handleDelete = (id) => dispatch(deleteComment(id))
-  const [chosenId, setChosenId] = useState(null);
+  // const handleDelete = (id) => dispatch(deleteComment(id))
+  // const [chosenId, setChosenId] = useState(null);
 
   return (
     <Stack spacing={1.5}>
